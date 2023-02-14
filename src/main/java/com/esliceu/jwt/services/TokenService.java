@@ -15,10 +15,16 @@ public class TokenService {
     @Value("${token.expiration}")
     int tokenExpiration;
     public String newToken(String user) {
-        String token = JWT.create()
+        return JWT.create()
                 .withSubject(user)
                 .withExpiresAt(new Date(System.currentTimeMillis() + tokenExpiration))
                 .sign(Algorithm.HMAC512(tokenSecret.getBytes()));
-        return token;
+    }
+
+    public String getUser(String token) {
+        return JWT.require(Algorithm.HMAC512(tokenSecret.getBytes()))
+                .build()
+                .verify(token)
+                .getSubject();
     }
 }
