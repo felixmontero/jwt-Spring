@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
@@ -21,8 +19,11 @@ public class LoginController {
         this.tokenService = tokenService;
       }
 
+    @CrossOrigin
     @PostMapping("/login")
-    public Map<String,String> login(String user,String password){
+    public Map<String,String> login(@RequestBody LoginForm loginForm){
+          String user = loginForm.getUser();
+          String password = loginForm.getPassword();
         if(user.equals("bill") && password.equals("gates")){
             String token = tokenService.newToken(user);
             System.out.println(token);
@@ -32,6 +33,7 @@ public class LoginController {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Bad credentials");
     }
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/private")
     public String test(HttpServletRequest request){
 

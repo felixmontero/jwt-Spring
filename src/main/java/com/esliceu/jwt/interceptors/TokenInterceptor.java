@@ -17,6 +17,9 @@ public class TokenInterceptor implements HandlerInterceptor {
     TokenService tokenService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if(request.getMethod().equals("OPTIONS")){
+            return true;
+        }
         String authHeader = request.getHeader("Authorization");
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Bad credentials");
