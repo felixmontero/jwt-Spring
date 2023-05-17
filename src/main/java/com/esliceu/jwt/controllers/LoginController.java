@@ -35,9 +35,12 @@ public class LoginController {
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/private")
-    public String test(HttpServletRequest request){
+    public Map<String, String> test(HttpServletRequest request){
 
-        String username = (String) request.getAttribute("user");
-        return username;
+        String username = (String) request.getAttribute("username");
+        Map<String,String> map = new HashMap<>();
+        map.put("user",username);
+        map.put("message","secret message");
+        return map;
     }
 }
